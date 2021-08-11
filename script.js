@@ -1,9 +1,9 @@
-var startTime = 0
-var endTime = 22
-var button
-var tasks = {};
+var startTime = 9
+var endTime = 17
 
-//function to display date and time on the top of the page
+
+
+// //function to display date and time on the top of the page
 function DisplayTime() {
 
     setInterval(function () {
@@ -11,6 +11,7 @@ function DisplayTime() {
 
         $('#currentDay').html(time);
     }, 1000);
+
 
     var time = moment().format('MMMM Do YYYY, h:mm:ss a')
 
@@ -21,87 +22,76 @@ $(document).ready(function () {
     DisplayTime();
 });
 
-//function to create time blocks
-
-function CreateTimeBlocks() {
-
-    for (var i = startTime; i < endTime; i++) {
-
-        var container = document.getElementById('container');
-        var timeblock = document.createElement('div');
-        var hour = document.createElement('div');
-        var text = document.createElement('textarea')
-        button = document.createElement('button')
-        var HourSpan = document.createElement('span')
-        var hourTime = moment().set('hour', i).format('h a')
-
-        // add classes 
-        timeblock.classList.add('timeblock');
-        hour.classList.add('hour');
-        text.classList.add('text')
-        button.classList.add('saveBtn')
-
-
-        container.appendChild(timeblock);
-        timeblock.appendChild(hour);
-        timeblock.appendChild(text);
-        timeblock.appendChild(button);
-        hour.appendChild(HourSpan);
-        HourSpan.append(hourTime);
-        button.textContent = 'Save';
-
-        text.value = tasks[i];
-
-     
-        
-    }
-
-
-}
-CreateTimeBlocks()
-
-
-
-//function save to local storage 
-//function clear local storage every 24H
-//function color change past present future
-// function retrieve from memory
 
 
 
 
 
-//function save to local storage 
-/*function Save() {
-
-    var tasks = document.getElementsByClassName('text').value
-    localStorage.setItem("tasks", JSON.stringify(tasks))
-
-    console.log(tasks)
-}
-
-button.addEventListener("click", Save())
-
-//function clear local storage every 24H
 
 
+//function color change 
+function colors() {
 
-//function color change past present future
+    let hournow =moment().format('H')
+    console.log(hournow,  'hour now')
 
+console.log("yes")
 
+    // let timeclass = "";
 
-// function retrieve from memory
+    for (let i = startTime; i <= endTime; i++) {
 
-function Retrieve() {
-
-    tasks = JSON.parse(localStorage.getItem("tasks"));
-
-    if (!tasks) {
-        tasks = {};
-        for (var i = startTime; i < endTime; i++) {
-            tasks[i] = "";
+        if (hournow > i ) {
+            // timeclass = "past"
+            console.log("yes")
+            console.log(hournow,'', i)
+            $(`#${i}`).addClass('past')
+            console.log(`${i}, #${i} `)
         }
+
+        else if (hournow==i) {
+            timeclass = "present"
+            console.log("now")
+            $(`#${i}`).addClass('present')
+            console.log(`${i}, #${i} `)
+        }
+
+        else {
+            timeclass = "future"
+            console.log("future")
+            $(`#${i}`).addClass('future')
+            console.log(`${i}, #${i} `)
+        }
+
+
+
     }
+
+
+
 }
 
-Retrieve() */
+ colors() 
+
+
+
+$(".saveBtn").click(function () {
+    var task = $(this).siblings(".description").val()
+    var time = $(this).parent().attr("id")
+
+    localStorage.setItem(time, task)
+})
+
+let hournow = moment().format('H')
+console.log(hournow)
+
+$('.time-block').each(function () {
+    var time = $(this).attr("id")
+
+    var content = localStorage.getItem(time)
+
+    $(this).children(".description").val(content)
+
+
+  
+})
